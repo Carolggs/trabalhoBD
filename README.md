@@ -1,5 +1,6 @@
 Não esquecer de instalar o PostgreSQL:
  sudo apt install postgresql postgresql-client -y
+ 
  sudo -u postgres psql
  CREATE DATABASE sistemaOnibus;
  \c sistemaonibus;
