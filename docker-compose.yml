@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: sistemaonibus_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sistemaonibus
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./esquema.sql:/docker-entrypoint-initdb.d/01-esquema.sql
+      - ./dados_completos.sql:/docker-entrypoint-initdb.d/02-dados_completos.sql
+      - ./init-db.sh:/docker-entrypoint-initdb.d/99-init-db.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - onibus_network
+
+  app:
+    build: .
+    container_name: sistemaonibus_app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: sistemaonibus
+      DB_USER: app_user
+      DB_PASSWORD: trabalhobd
+    stdin_open: true
+    tty: true
+    networks:
+      - onibus_network
+
+volumes:
+  postgres_data:
+
+networks:
+  onibus_network:
+    driver: bridge
