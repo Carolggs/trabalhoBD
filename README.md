@@ -1,37 +1,53 @@
-Não esquecer de instalar o PostgreSQL:
+# Sistema de Ônibus - Banco de Dados
 
- sudo apt install postgresql postgresql-client -y
- 
- sudo -u postgres psql
- 
- CREATE DATABASE sistemaOnibus;
- 
- \c sistemaonibus;
- 
- \i /home/carolina/Trabalho3BD/esquema.sql
- 
- \i /home/carolina/Trabalho3BD/insercoes.sql
- 
- CREATE USER app_user WITH PASSWORD 'trabalhobd';
- 
- GRANT ALL PRIVILEGES ON DATABASE sistemaonibus TO app_user;
- 
- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO app_user;
- 
- GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO app_user;
+## Como executar?
 
- ----> ai pode rodar qualquer comando de sql e boa ja pode fazer coisas no banco 
- 
-Para rodar a aplicação:
+```bash
+python3 run.py
+```
 
- pip3 install psycopg2-binary
- 
- python3 app.py
+O script inicia automaticamente 2 containers Docker:
+- **sistemaonibus_db** - PostgreSQL na porta 5433
+- **sistemaonibus_app** - Aplicação Python
 
-PS: voce tem que dar os comandos para criar o banco e criar usuario e colocar a senha e usuario: 
+## Usuários de Teste
 
-user="app_user",
+O sistema inicia com usuários já cadastrados. Para ver todos os usuários, senhas e dados disponíveis:
 
-password="trabalhobd" 
+1. Execute o sistema
+2. No menu principal, selecione **"Informações para DEBUG"**
+3. Veja a lista completa de cidadãos, gestores, linhas e bairros
 
-se voce seguir todos os comandos que eu deixei aqui nao precisa se preocupar com isso
+### Exemplos de Login
+
+**Cidadão:**
+- Email: `maria.santos@test.com`
+- Senha: `senha123`
+
+**Gestor:**
+- Email: `ricardo.mendes@test.com`
+- Senha: `gestor123`
+
+## Comandos Úteis
+
+```bash
+# Parar containers
+docker compose down
+
+# Ver logs
+docker compose logs
+
+# Reiniciar do zero 
+docker compose down -v
+python3 run.py
+```
+
+## Credenciais do Banco
+
+```
+Host: localhost
+Port: 5433
+Database: sistemaonibus
+User: app_user
+Password: trabalhobd
+``` 
