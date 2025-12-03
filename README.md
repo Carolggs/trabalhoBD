@@ -51,6 +51,9 @@ docker compose logs
 # Reiniciar do zero 
 docker compose down -v
 python3 run.py
+
+# Comando para rodar as consultas do arquivo consultas.sql
+docker exec -i sistemaonibus_db psql -U app_user -d sistemaonibus  < consultas.sql
 ```
 
 ## Credenciais do Banco
